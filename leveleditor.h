@@ -37,7 +37,7 @@ public:
         });
         connect(fontButton, &QPushButton::clicked, this, [&](){
             bool ok;
-            font = QFontDialog::getFont(&ok, this);
+            font = QFontDialog::getFont(&ok, font, this, tr("Schriftart auswählen"));
             if(!ok)
                 font = QFont("Helvetica [Cronyx]", 10);
         });
@@ -57,6 +57,11 @@ public:
         object.insert("font", getFont().toString());
         object.insert("duration", getDuration());
         return object;
+    }
+    void setJsonObject(QJsonObject object){
+        lineEdit->setText(object.value("text").toString());
+        durationSpinBox->setValue(object.value("duration").toDouble());
+        font.fromString(object.value("font").toString());
     }
     ~LineWidget(){
         delete mainLayout;
@@ -98,6 +103,10 @@ public:
         object.insert("nextIndex", getNextIndex());
         return object;
     }
+    void setJsonObject(QJsonObject object){
+        lineEdit->setText(object.value("text").toString());
+        nextIndexSpinBox->setValue(object.value("nextIndex").toInt());
+    }
     ~ActionWidget(){
         delete mainLayout;
         delete lineEdit;
@@ -129,6 +138,7 @@ public:
         mainLayout->addWidget(showFileDialog);
     }
     QString getPath(){return pathEdit->text();}
+    void setPath(QString path){pathEdit->setText(path);}
     ~RessourceWidget(){
         delete mainLayout;
         delete pathEdit;
@@ -146,6 +156,7 @@ class SceneEditor : public QWidget{
 public:
     explicit SceneEditor(int index = 0, QWidget *parent = nullptr);
     QJsonObject toJsonObjcet();
+    void setJsonObject(QJsonObject object);
 public slots:
     void addLine();
     void removeLine();
@@ -176,8 +187,9 @@ class LevelEditor : public QTabWidget
     Q_OBJECT
 public:
     explicit LevelEditor(QWidget *parent = nullptr, int index = 0);
-    void newScene(int index);
+    void newScene(int index = 0);
     void save();
+    void load();
 public slots:
     void updateTitle(QString title);
 private:

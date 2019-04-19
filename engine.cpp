@@ -107,17 +107,17 @@ void Engine::on_mainMenuButton_clicked()
 
 void Engine::on_action1_clicked()
 {
-    
+    ;
 }
 
 void Engine::on_action2_clicked()
 {
-    
+    ;
 }
 
 void Engine::on_action3_clicked()
 {
-    
+    ;
 }
 
 void Engine::on_restartButton_clicked()
@@ -146,4 +146,9 @@ void Engine::on_backToMainMenu_clicked()
 void Engine::on_SaveLevelButton_clicked()
 {
     editor->save();
+}
+
+void Engine::on_loadLevelButton_clicked()
+{
+    editor->load();
 }

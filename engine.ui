@@ -215,6 +215,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="loadLevelButton">
+            <property name="text">
+             <string>Level Laden</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="SaveLevelButton">
             <property name="text">
              <string>Level Speichern</string>

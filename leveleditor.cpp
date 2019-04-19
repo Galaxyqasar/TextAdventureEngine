@@ -76,6 +76,29 @@ QJsonObject SceneEditor::toJsonObjcet()
     return object;
 }
 
+void SceneEditor::setJsonObject(QJsonObject object)
+{
+    index = object.value("index").toInt();
+    timeEdit->setTime(QTime::fromString(object.value("time").toString()));
+    dateEdit->setDate(QDate::fromString(object.value("date").toString()));
+    music->setPath(object.value("music").toString());
+    background->setPath(object.value("background").toString());
+    questionEdit->setText(object.value("question").toString());
+    QJsonArray lines = object.value("lines").toArray();
+    QJsonArray actions = object.value("actions").toArray();
+    
+    for(QJsonValueRef e : lines){
+        addLine();
+        this->lines.last()->setJsonObject(e.toObject());
+    }
+    if(actions.count() > 0)
+        action1->setJsonObject(actions.at(0).toObject());
+    if(actions.count() > 1)
+        action2->setJsonObject(actions.at(1).toObject());
+    if(actions.count() > 2)
+        action3->setJsonObject(actions.at(2).toObject());
+}
+
 void SceneEditor::addLine()
 {
     LineWidget *newLine = new LineWidget(this);
@@ -146,6 +169,28 @@ void LevelEditor::save()
     f.write(doc.toJson());
     f.flush();
     f.close();
+}
+
+void LevelEditor::load()
+{
+    for(SceneEditor *e : scenes){
+        scenes.removeAll(e);
+        e->deleteLater();
+    }
+    QString path = QFileDialog::getOpenFileName(this);
+    if(path.isEmpty())
+        return;
+    QFile f(path);
+    f.open(QIODevice::ReadOnly);
+    QByteArray json = f.readAll();
+    f.close();
+    QJsonDocument doc = QJsonDocument::fromJson(json);
+    QJsonObject root = doc.object();
+    QJsonArray levels = root.value("levels").toArray();
+    for(QJsonValueRef e : levels){
+        newScene();
+        scenes.last()->setJsonObject(e.toObject());
+    }
 }
 
 void LevelEditor::updateTitle(QString title)

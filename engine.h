@@ -52,6 +52,8 @@ private slots:
     
     void on_SaveLevelButton_clicked();
     
+    void on_loadLevelButton_clicked();
+    
 private:
     Ui::Engine *ui;
     LevelEditor *editor;
