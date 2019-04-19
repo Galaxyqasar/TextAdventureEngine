@@ -39,7 +39,18 @@ SceneEditor::SceneEditor(int index, QWidget *parent) : QWidget(parent){
     actionLayout->addWidget(action2);
     actionLayout->addWidget(action3);
     
+    questionLayout = new QHBoxLayout();
+    changeqFont = new QPushButton(this);
     questionEdit = new QLineEdit(this);
+    questionLayout->addWidget(questionEdit);
+    questionLayout->addWidget(changeqFont);
+    changeqFont->setText("Schriftart");
+    connect(changeqFont, &QPushButton::clicked, this, [&](){
+        bool ok;
+        qFont = QFontDialog::getFont(&ok, qFont, this, tr("Schriftart auswählen"));
+        if(!ok)
+            qFont = QFont("Helvetica [Cronyx]", 10);
+    });
 
     mainLayout = new QVBoxLayout(this);
     mainLayout->addLayout(timeLayout);
@@ -47,7 +58,7 @@ SceneEditor::SceneEditor(int index, QWidget *parent) : QWidget(parent){
     mainLayout->addWidget(background);
     mainLayout->addWidget(addLineButton);
     mainLayout->addItem(spacer);
-    mainLayout->addWidget(questionEdit);
+    mainLayout->addLayout(questionLayout);
     mainLayout->addLayout(actionLayout);
 }
 
@@ -65,6 +76,7 @@ QJsonObject SceneEditor::toJsonObjcet()
         lines.append(e->toJsonObject());
     }
     object.insert("lines", lines);
+    object.insert("qFont", QJsonValue(qFont.toString()));
     object.insert("question", QJsonValue(questionEdit->text()));
     
     QJsonArray actions;
@@ -79,11 +91,13 @@ QJsonObject SceneEditor::toJsonObjcet()
 void SceneEditor::setJsonObject(QJsonObject object)
 {
     index = object.value("index").toInt();
+    setIndex(index);
     timeEdit->setTime(QTime::fromString(object.value("time").toString()));
     dateEdit->setDate(QDate::fromString(object.value("date").toString()));
     music->setPath(object.value("music").toString());
     background->setPath(object.value("background").toString());
     questionEdit->setText(object.value("question").toString());
+    qFont = QFont(object.value("qFont").toString());
     QJsonArray lines = object.value("lines").toArray();
     QJsonArray actions = object.value("actions").toArray();
     
@@ -120,6 +134,7 @@ void SceneEditor::removeLine()
 void SceneEditor::setIndex(int index)
 {
     this->index = index;
+    qDebug()<<this->index;
     emit changeTitle("Index: " + QString::number(index));
 }
 
@@ -144,7 +159,7 @@ void LevelEditor::newScene(int index)
 {
     scenes.append(new SceneEditor(index, this));
     connect(scenes.last(), SIGNAL(changeTitle(QString)), this, SLOT(updateTitle(QString)));
-    addTab(scenes.last(), "Index: " + QString::number(scenes.last()->getIndex()));
+    insertTab(this->count()+1, scenes.last(), "Index: " + QString::number(scenes.last()->getIndex()));
 }
 
 void LevelEditor::save()
@@ -195,5 +210,8 @@ void LevelEditor::load()
 
 void LevelEditor::updateTitle(QString title)
 {
-    setTabText(currentIndex(), title);
+    SceneEditor *scene = qobject_cast<SceneEditor*>(sender());
+    int sceneIndex = scenes.indexOf(scene)+1;
+    qDebug()<<"updated title"<<title<<sceneIndex;
+    setTabText(sceneIndex, title);
 }

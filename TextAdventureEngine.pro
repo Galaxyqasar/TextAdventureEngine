@@ -27,13 +27,15 @@ SOURCES += \
         engine.cpp \
     level.cpp \
     leveleditor.cpp \
-    numberdialog.cpp
+    numberdialog.cpp \
+    textdisplay.cpp
 
 HEADERS += \
         engine.h \
     level.h \
     leveleditor.h \
-    numberdialog.h
+    numberdialog.h \
+    textdisplay.h
 
 FORMS += \
         engine.ui \

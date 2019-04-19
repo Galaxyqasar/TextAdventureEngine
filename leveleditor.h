@@ -166,7 +166,9 @@ signals:
     void changeTitle(QString title);
 private:
     int index;
+    QFont qFont;
     QHBoxLayout *timeLayout;
+    QHBoxLayout *questionLayout;
     QVBoxLayout *resourceLayout;
     QVBoxLayout *mainLayout;
     QVBoxLayout *actionLayout;
@@ -178,6 +180,7 @@ private:
     QTimeEdit *timeEdit;
     QDateEdit *dateEdit;
     QPushButton *changeIndexButton;
+    QPushButton *changeqFont;
     RessourceWidget *music, *background;
     NumberDialog *numberDialog;
 };

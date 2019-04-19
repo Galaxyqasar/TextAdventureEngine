@@ -37,6 +37,8 @@ public:
     
     int index;
     QString time;
+    QString question;
+    QFont qFont;
     QString sound;
     QImage background;
     QList<Line> lines;

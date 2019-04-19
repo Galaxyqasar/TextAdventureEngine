@@ -8,18 +8,33 @@ Engine::Engine(QWidget *parent) :
     ui(new Ui::Engine)
 {
     ui->setupUi(this);
+    mainLayout = new QVBoxLayout(ui->imageDisplay);
     editor = new LevelEditor(ui->levelEditorTab);
+    textDisplay = new TextDisplay(ui->imageDisplay);
     numberDialog = new NumberDialog(this);
+    mainLayout->addWidget(textDisplay);
     ui->levelEditorLayout->insertWidget(0,editor);
     ui->tabWidget->tabBar()->hide();
     ui->tabWidget->setCurrentIndex(mainMenu);
     ui->statusBar->hide();
     ui->menuBar->hide();
     ui->mainToolBar->hide();
+    textTimer = new QTimer();
     gameTimer = new QTimer();
+    textTimer->setSingleShot(true);
     gameTimer->setInterval(100);
     connect(gameTimer, SIGNAL(timeout()), this, SLOT(gameTick()));
+    connect(textTimer, SIGNAL(timeout()), this, SLOT(showNextText()));
     loadLevels({"./level1.json"});
+    music = new QMediaPlayer();
+    
+    QSizePolicy spRetain = ui->progressBar->sizePolicy();
+    spRetain.setRetainSizeWhenHidden(true);
+    ui->progressBar->setSizePolicy(spRetain);
+    
+    spRetain = ui->action1->sizePolicy();
+    spRetain.setRetainSizeWhenHidden(true);
+    ui->action1->setSizePolicy(spRetain);
 }
 
 Engine::~Engine()
@@ -53,21 +68,68 @@ void Engine::loadLevels(QStringList files)
         QList<Level*> file = Level::loadFile(e);
         levels.append(file);
     }
+    current = levels.first();
+    qDebug()<<levels.length();
 }
 
-void Engine::updateLevel()
+void Engine::updateLevel(int index)
 {
-    if(levels.length() <= position){
+    if(index >= 0)
+        position = current->actions[index].nextIndex;
+    bool found = false;
+    for(Level *e : levels){
+        if(e->index == position){
+            current = e;
+            found = true;
+            break;
+        }
+    }
+    if(!found){
         qDebug()<<"an error occured";
         qApp->quit();
         return;
     }
     current = levels[position];
-    qDebug()<<current->background;
+    ui->action1->setText(current->actions[0].text);
+    ui->action2->setText(current->actions[1].text);
+    ui->action3->setText(current->actions[2].text);
     ui->imageDisplay->setPixmap(QPixmap::fromImage(current->background));
-    music = new QSound(current->sound);
-    music->setLoops(QSound::Infinite);
+    music->stop();
+    music->setMedia(QUrl(current->sound));
     music->play();
+    currentText = 0;
+    showNextText();
+    ui->progressBar->setValue(100);
+    ui->progressBar->setVisible(false);
+    ui->action1->setVisible(false);
+    ui->action2->setVisible(false);
+    ui->action3->setVisible(false);
+}
+
+void Engine::showNextText()
+{
+    if(currentText == current->lines.length()){
+        showQuestion();
+        gameTimer->start();
+    }
+    else{
+        QString text = current->lines[currentText].text;
+        QFont font = current->lines[currentText].font;
+        textDisplay->updateText(text, font);
+        int duration = int(current->lines[currentText].duration*1000);
+        textTimer->start(duration);
+    }
+    currentText++;
+}
+
+void Engine::showQuestion()
+{
+    ui->progressBar->setVisible(true);
+    ui->action1->setVisible(true);
+    ui->action2->setVisible(true);
+    ui->action3->setVisible(true);
+    ui->progressBar->setValue(100);
+    textDisplay->updateText(current->question, current->qFont);
 }
 
 void Engine::on_pauseButton_clicked()
@@ -92,7 +154,6 @@ void Engine::on_startButton_clicked()
     ui->tabWidget->setCurrentIndex(mainGame);
     ui->progressBar->setValue(100);
     updateLevel();
-    gameTimer->start();
 }
 
 void Engine::on_quitButton_clicked()
@@ -102,22 +163,25 @@ void Engine::on_quitButton_clicked()
 
 void Engine::on_mainMenuButton_clicked()
 {
+    music->stop();
+    gameTimer->stop();
+    textTimer->stop();
     ui->tabWidget->setCurrentIndex(mainMenu);
 }
 
 void Engine::on_action1_clicked()
 {
-    ;
+    updateLevel(0);
 }
 
 void Engine::on_action2_clicked()
 {
-    ;
+    updateLevel(1);
 }
 
 void Engine::on_action3_clicked()
 {
-    ;
+    updateLevel(2);
 }
 
 void Engine::on_restartButton_clicked()
