@@ -6,6 +6,8 @@
 #include <QBoxLayout>
 #include <QWidget>
 #include <QTimer>
+#include <QDir>
+#include <QDirIterator>
 
 #include "level.h"
 #include "leveleditor.h"
@@ -31,13 +33,12 @@ public:
     explicit Engine(QWidget *parent = nullptr);
     ~Engine();
     
+    void loadLevels(QString filename);
+    void loadLevels(QStringList files);
+    
 private slots:
     void gameTick();
-    void gameOver();
-    void loadLevels(QStringList files);
-    void updateLevel(int index = -1);
     void showNextText();
-    void showQuestion();
     
     void on_pauseButton_clicked();    
     void on_startButton_clicked();    
@@ -54,6 +55,12 @@ private slots:
     void on_loadLevelButton_clicked();
     
 private:
+    void gameOver();
+    void updateLevel(int index = -1);
+    void showQuestion();
+    void patchUi();
+    
+    
     Ui::Engine *ui;
     LevelEditor *editor;
     TextDisplay *textDisplay;

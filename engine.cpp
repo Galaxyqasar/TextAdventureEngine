@@ -8,33 +8,15 @@ Engine::Engine(QWidget *parent) :
     ui(new Ui::Engine)
 {
     ui->setupUi(this);
-    mainLayout = new QVBoxLayout(ui->imageDisplay);
-    editor = new LevelEditor(ui->levelEditorTab);
-    textDisplay = new TextDisplay(ui->imageDisplay);
-    numberDialog = new NumberDialog(this);
-    mainLayout->addWidget(textDisplay);
-    ui->levelEditorLayout->insertWidget(0,editor);
-    ui->tabWidget->tabBar()->hide();
-    ui->tabWidget->setCurrentIndex(mainMenu);
-    ui->statusBar->hide();
-    ui->menuBar->hide();
-    ui->mainToolBar->hide();
+    patchUi();
     textTimer = new QTimer();
     gameTimer = new QTimer();
     textTimer->setSingleShot(true);
     gameTimer->setInterval(100);
     connect(gameTimer, SIGNAL(timeout()), this, SLOT(gameTick()));
     connect(textTimer, SIGNAL(timeout()), this, SLOT(showNextText()));
-    loadLevels({"./level1.json"});
+    
     music = new QMediaPlayer();
-    
-    QSizePolicy spRetain = ui->progressBar->sizePolicy();
-    spRetain.setRetainSizeWhenHidden(true);
-    ui->progressBar->setSizePolicy(spRetain);
-    
-    spRetain = ui->action1->sizePolicy();
-    spRetain.setRetainSizeWhenHidden(true);
-    ui->action1->setSizePolicy(spRetain);
 }
 
 Engine::~Engine()
@@ -61,15 +43,17 @@ void Engine::gameOver()
     ui->tabWidget->setCurrentIndex(gameOverScreen);
     music->stop();
 }
+void Engine::loadLevels(QString filename)
+{
+    QList<Level*> levels = Level::loadFile(filename);
+    this->levels.append(levels);
+}
 
 void Engine::loadLevels(QStringList files)
 {
     for(QString e : files){
-        QList<Level*> file = Level::loadFile(e);
-        levels.append(file);
+        loadLevels(e);
     }
-    current = levels.first();
-    qDebug()<<levels.length();
 }
 
 void Engine::updateLevel(int index)
@@ -132,6 +116,29 @@ void Engine::showQuestion()
     textDisplay->updateText(current->question, current->qFont);
 }
 
+void Engine::patchUi()
+{
+    mainLayout = new QVBoxLayout(ui->imageDisplay);
+    editor = new LevelEditor(ui->levelEditorTab);
+    textDisplay = new TextDisplay(ui->imageDisplay);
+    numberDialog = new NumberDialog(this);
+    mainLayout->addWidget(textDisplay);
+    ui->levelEditorLayout->insertWidget(0,editor);
+    ui->tabWidget->tabBar()->hide();
+    ui->tabWidget->setCurrentIndex(mainMenu);
+    ui->statusBar->hide();
+    ui->menuBar->hide();
+    ui->mainToolBar->hide();
+    
+    QSizePolicy spRetain = ui->progressBar->sizePolicy();
+    spRetain.setRetainSizeWhenHidden(true);
+    ui->progressBar->setSizePolicy(spRetain);
+    
+    spRetain = ui->action1->sizePolicy();
+    spRetain.setRetainSizeWhenHidden(true);
+    ui->action1->setSizePolicy(spRetain);
+}
+
 void Engine::on_pauseButton_clicked()
 {
     if(!paused){
@@ -149,6 +156,15 @@ void Engine::on_pauseButton_clicked()
 
 void Engine::on_startButton_clicked()
 {
+    QDir current = QDir::current();
+    QString path = current.absolutePath();
+    QDirIterator iter(path, QStringList()<<"*.json", QDir::Files);
+    QStringList files;
+    while(iter.hasNext())
+        files.append(iter.next());
+    qDebug()<<files;
+    
+    loadLevels({"./level1.json","test.json"});
     paused = false;
     position = 0;
     ui->tabWidget->setCurrentIndex(mainGame);
