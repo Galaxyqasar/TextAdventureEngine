@@ -74,9 +74,6 @@ void Engine::updateLevel(int index)
         return;
     }
     current = levels[position];
-    ui->action1->setText(current->actions[0].text);
-    ui->action2->setText(current->actions[1].text);
-    ui->action3->setText(current->actions[2].text);
     ui->imageDisplay->setPixmap(QPixmap::fromImage(current->background));
     music->stop();
     music->setMedia(QUrl(current->sound));
@@ -85,9 +82,8 @@ void Engine::updateLevel(int index)
     showNextText();
     ui->progressBar->setValue(100);
     ui->progressBar->setVisible(false);
-    ui->action1->setVisible(false);
-    ui->action2->setVisible(false);
-    ui->action3->setVisible(false);
+    actionDisplay->setActions(current->actions);
+    actionDisplay->setVisible(false);
 }
 
 void Engine::showNextText()
@@ -109,9 +105,7 @@ void Engine::showNextText()
 void Engine::showQuestion()
 {
     ui->progressBar->setVisible(true);
-    ui->action1->setVisible(true);
-    ui->action2->setVisible(true);
-    ui->action3->setVisible(true);
+    actionDisplay->setVisible(true);
     ui->progressBar->setValue(100);
     textDisplay->updateText(current->question, current->qFont);
 }
@@ -130,13 +124,16 @@ void Engine::patchUi()
     ui->menuBar->hide();
     ui->mainToolBar->hide();
     
+    actionDisplay = new ActionDisplay(ui->mainGame, {"action1","action2","action3"});
+    connect(actionDisplay, &ActionDisplay::actionPressed, this, [&](int index){
+        updateLevel(index);
+    });
+    
+    ui->mainGame->layout()->addWidget(actionDisplay);
+    
     QSizePolicy spRetain = ui->progressBar->sizePolicy();
     spRetain.setRetainSizeWhenHidden(true);
     ui->progressBar->setSizePolicy(spRetain);
-    
-    spRetain = ui->action1->sizePolicy();
-    spRetain.setRetainSizeWhenHidden(true);
-    ui->action1->setSizePolicy(spRetain);
 }
 
 void Engine::on_pauseButton_clicked()
@@ -185,21 +182,6 @@ void Engine::on_mainMenuButton_clicked()
     ui->tabWidget->setCurrentIndex(mainMenu);
 }
 
-void Engine::on_action1_clicked()
-{
-    updateLevel(0);
-}
-
-void Engine::on_action2_clicked()
-{
-    updateLevel(1);
-}
-
-void Engine::on_action3_clicked()
-{
-    updateLevel(2);
-}
-
 void Engine::on_restartButton_clicked()
 {
     on_startButton_clicked();
@@ -231,4 +213,60 @@ void Engine::on_SaveLevelButton_clicked()
 void Engine::on_loadLevelButton_clicked()
 {
     editor->load();
+}
+
+ActionDisplay::ActionDisplay(QWidget *parent, QStringList buttonNames) : QWidget (parent)
+{
+    mainLayout = new QHBoxLayout(this);
+    mainLayout->setContentsMargins(0,0,0,0);
+
+    for(QString e : buttonNames){
+        actions.append(new QPushButton(this));
+        actions.last()->setText(e);
+        actions.last()->show();
+        mainLayout->addWidget(actions.last());
+        connect(actions.last(), &QPushButton::clicked, this, [&](){
+            QPushButton *send = qobject_cast<QPushButton*>(sender());
+            emit actionPressed(actions.indexOf(send));
+        });
+    }
+    QSizePolicy spRetain = sizePolicy();
+    spRetain.setRetainSizeWhenHidden(true);
+    setSizePolicy(spRetain);
+}
+
+ActionDisplay::~ActionDisplay()
+{
+    for(QPushButton *e : actions)
+        e->deleteLater();
+}
+
+void ActionDisplay::setActions(QStringList buttonNames)
+{
+    for(QPushButton *e : actions)
+        e->deleteLater();
+    actions.clear();
+    
+    for(QString e : buttonNames){
+        actions.append(new QPushButton(this));
+        actions.last()->setText(e);
+        mainLayout->addWidget(actions.last());
+        connect(actions.last(), &QPushButton::clicked, this, [&](){
+            QPushButton *send = qobject_cast<QPushButton*>(sender());
+            emit actionPressed(actions.indexOf(send));
+        });
+        QSizePolicy spRetain = actions.last()->sizePolicy();
+        spRetain.setRetainSizeWhenHidden(true);
+        actions.last()->setSizePolicy(spRetain);
+    }
+}
+
+
+void ActionDisplay::setActions(QList<Action> actions){
+    QStringList buttonNames;
+    for(Action e : actions){
+        buttonNames.append(e.text);
+    }
+    setActions(buttonNames);
+    qDebug()<<actions.length();
 }

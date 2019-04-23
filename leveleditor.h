@@ -90,10 +90,16 @@ public:
         nextIndexSpinBox = new QSpinBox(this);
         nextIndexSpinBox->setMaximum(INT_MAX);
         nextIndexSpinBox->setMinimum(INT_MIN);
+        removeBtn = new QPushButton(this);
+        removeBtn->setText("X");
+        connect(removeBtn, &QPushButton::clicked, this, [&](){
+            emit remove();
+        });
         
         mainLayout = new QHBoxLayout(this);
         mainLayout->addWidget(nextIndexSpinBox);
         mainLayout->addWidget(lineEdit);
+        mainLayout->addWidget(removeBtn);
     }
     QString getText(){return lineEdit->text();}
     int getNextIndex(){return nextIndexSpinBox->value();}
@@ -112,10 +118,13 @@ public:
         delete lineEdit;
         delete nextIndexSpinBox;
     }
+signals:
+    void remove();
 private:
     QHBoxLayout *mainLayout;
     QLineEdit *lineEdit;
     QSpinBox *nextIndexSpinBox;
+    QPushButton *removeBtn;
 };
 
 class RessourceWidget : public QWidget{
@@ -159,7 +168,9 @@ public:
     void setJsonObject(QJsonObject object);
 public slots:
     void addLine();
+    void addAction();
     void removeLine();
+    void removeAction();
     void setIndex(int index);
     int getIndex();
 signals:
@@ -172,6 +183,7 @@ private:
     QVBoxLayout *resourceLayout;
     QVBoxLayout *mainLayout;
     QVBoxLayout *actionLayout;
+    QList<ActionWidget*> actions;
     ActionWidget *action1, *action2, *action3;
     QPushButton *addLineButton;
     QSpacerItem *spacer;
@@ -181,6 +193,7 @@ private:
     QDateEdit *dateEdit;
     QPushButton *changeIndexButton;
     QPushButton *changeqFont;
+    QPushButton *addActionBtn;
     RessourceWidget *music, *background;
     NumberDialog *numberDialog;
 };

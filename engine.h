@@ -18,6 +18,22 @@ namespace Ui {
 class Engine;
 }
 
+class ActionDisplay : public QWidget{
+    Q_OBJECT
+public:
+    explicit ActionDisplay(QWidget *parent = nullptr, QStringList buttonNames = {});
+    ~ActionDisplay();
+    void setActions(QStringList buttonNames);
+    void setActions(QList<Action> actions);
+    
+signals:
+    void actionPressed(int index);
+    
+private:
+    QList<QPushButton*> actions;
+    QHBoxLayout *mainLayout;
+};
+
 class Engine : public QMainWindow
 {
     Q_OBJECT
@@ -43,10 +59,7 @@ private slots:
     void on_pauseButton_clicked();    
     void on_startButton_clicked();    
     void on_quitButton_clicked();    
-    void on_mainMenuButton_clicked();    
-    void on_action1_clicked();    
-    void on_action2_clicked();    
-    void on_action3_clicked();    
+    void on_mainMenuButton_clicked();
     void on_restartButton_clicked();    
     void on_openLevelEditorButton_clicked();    
     void on_newSceneButton_clicked();    
@@ -65,6 +78,7 @@ private:
     LevelEditor *editor;
     TextDisplay *textDisplay;
     NumberDialog *numberDialog;
+    ActionDisplay *actionDisplay;
     
     QVBoxLayout *mainLayout;
     

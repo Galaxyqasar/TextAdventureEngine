@@ -30,14 +30,17 @@ SceneEditor::SceneEditor(int index, QWidget *parent) : QWidget(parent){
     
     spacer = new QSpacerItem(20,40,QSizePolicy::Preferred, QSizePolicy::Expanding);
     
-    action1 = new ActionWidget(this);
-    action2 = new ActionWidget(this);
-    action3 = new ActionWidget(this);
+    addActionBtn = new QPushButton(this);
+    addActionBtn->setText("Neue Action");
+    connect(addActionBtn, &QPushButton::clicked, this, [&](){
+        addAction();
+    });
     
     actionLayout = new QVBoxLayout();
-    actionLayout->addWidget(action1);
-    actionLayout->addWidget(action2);
-    actionLayout->addWidget(action3);
+    for(int i = 0; i < 3; i++)
+        addAction();
+    
+    actionLayout->addWidget(addActionBtn);
     
     questionLayout = new QHBoxLayout();
     changeqFont = new QPushButton(this);
@@ -70,19 +73,18 @@ QJsonObject SceneEditor::toJsonObjcet()
     object.insert("date", QJsonValue(dateEdit->date().toString()));
     object.insert("music", QJsonValue(music->getPath()));
     object.insert("background", QJsonValue(background->getPath()));
+    object.insert("qFont", QJsonValue(qFont.toString()));
+    object.insert("question", QJsonValue(questionEdit->text()));
     
     QJsonArray lines;
     for(LineWidget *e : this->lines){
         lines.append(e->toJsonObject());
     }
-    object.insert("lines", lines);
-    object.insert("qFont", QJsonValue(qFont.toString()));
-    object.insert("question", QJsonValue(questionEdit->text()));
+    object.insert("lines", lines);    
     
     QJsonArray actions;
-    actions.append(action1->toJsonObject());
-    actions.append(action2->toJsonObject());
-    actions.append(action3->toJsonObject());
+    for(ActionWidget *e : this->actions)
+        actions.append(e->toJsonObject());
     object.insert("actions", actions);
     
     return object;
@@ -105,12 +107,10 @@ void SceneEditor::setJsonObject(QJsonObject object)
         addLine();
         this->lines.last()->setJsonObject(e.toObject());
     }
-    if(actions.count() > 0)
-        action1->setJsonObject(actions.at(0).toObject());
-    if(actions.count() > 1)
-        action2->setJsonObject(actions.at(1).toObject());
-    if(actions.count() > 2)
-        action3->setJsonObject(actions.at(2).toObject());
+    for(QJsonValueRef e : actions){
+        addAction();
+        this->actions.last()->setJsonObject(e.toObject());
+    }
 }
 
 void SceneEditor::addLine()
@@ -122,12 +122,30 @@ void SceneEditor::addLine()
     connect(newLine, SIGNAL(remove()), this, SLOT(removeLine()));
 }
 
+void SceneEditor::addAction()
+{
+    ActionWidget * newAction = new ActionWidget(this);
+    newAction->show();
+    actions.append(newAction);
+    actionLayout->insertWidget(actionLayout->count()-1, newAction);
+    connect(newAction, SIGNAL(remove()), this, SLOT(removeAction()));
+}
+
 void SceneEditor::removeLine()
 {
     LineWidget *widget = qobject_cast<LineWidget*>(sender());
     lines.removeAll(widget);
     widget->hide();
     mainLayout->removeWidget(widget);
+    widget->deleteLater();
+}
+
+void SceneEditor::removeAction()
+{
+    ActionWidget *widget = qobject_cast<ActionWidget*>(sender());
+    actions.removeAll(widget);
+    widget->hide();
+    actionLayout->removeWidget(widget);
     widget->deleteLater();
 }
 
@@ -142,7 +160,6 @@ int SceneEditor::getIndex()
 {
     return index;
 }
-
 
 LevelEditor::LevelEditor(QWidget *parent, int index) : QTabWidget(parent){
     setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
