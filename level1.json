@@ -1,0 +1,353 @@
+{
+    "levels": [
+        {
+            "actions": [
+                {
+                    "nextIndex": 1,
+                    "text": "Weiter"
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 0,
+            "lines": [
+                {
+                    "duration": 7,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Kaiser Augustus hat eine Volkszählung befohlen.<br>Dadurch müssen deine Eltern zurück nach Bethlehem reisen.<br>"
+                },
+                {
+                    "duration": 12,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Durch die Volkszählung waren alle Gasthäuser überfüllt und es gab kein einziges freies Zimmer mehr.<br>\nEs gab nur noch einen einzigen freien Stall, in welchem du geboren wurdest.<br>\nDeine Eltern gaben dir den Namen Jesus. <br>\nHirten kommen und behaupten, sie hätten einen Engel gesehen, der ihnen verkündetet hat, dass ein Heilland geboren sei. <br>"
+                },
+                {
+                    "duration": 12,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Es kommen auch noch 3 Männer aus dem Morgenland, welche Geschenke für den Heilland dabei haben. <br>\nSie behaupten, sie hätten einen neuen Stern am Nachthimmel entdeckt.<br>\nSie fragten sich , was dieser Stern zu bedeuten hat.<br>\nAus Neugierde folgten sie dem Stern und er führte sie nach Bethlehem zum Stall.<br>\nSie bringen Weihrauch, Gold und Myrrhe.<br>"
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0",
+            "question": "Weiter?",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": 2,
+                    "text": "Ja"
+                },
+                {
+                    "nextIndex": 3,
+                    "text": "Nein"
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 1,
+            "lines": [
+                {
+                    "duration": 2,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "12 Jahre später"
+                },
+                {
+                    "duration": 20,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Du wohnst jetzt mit deinen Eltern Josef und Maria in Nazaret.<br>\nJedes Jahr gingen deine Eltern zum Passa-Fest nach Jerusalem.<br>\nDoch dieses Jahr kannst du zum ersten Mal mitgehen<br>"
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0",
+            "question": "Willst du mitgehen?",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": 4,
+                    "text": "Ja"
+                },
+                {
+                    "nextIndex": 5,
+                    "text": "Nein"
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 2,
+            "lines": [
+                {
+                    "duration": 5,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Ihr müsst viele Tage wandern, doch letztendlich kommt ihr in Jerusalem an.<br>"
+                },
+                {
+                    "duration": 10,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "\nDeine Eltern sagen, dass du dich schon wieder auf die Heimreise vorbereiten sollst.<br>Doch du eigentlich möchtest du noch nicht abreißen, da ihr so viel Spaß hattet.<br>"
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0",
+            "question": "Möchtest du mit deinen Eltern zurück nach Nazareth reisen?",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": -1,
+                    "text": "Weiter"
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 3,
+            "lines": [
+                {
+                    "duration": 5,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Du bleibst zu Hause und wartest bis deine Eltern vom Fest wieder zurück kommen.<br>\nEin Tag später wirst du jedoch von Räubern entführt.<br>"
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0,12,-1,5,50,0,0,0,0,0",
+            "question": "Weiter?",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": -1,
+                    "text": ""
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 4,
+            "lines": [
+                {
+                    "duration": 10,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Du machst dich mit deinen Eltern auf den Heimweg.<br>\nAn einer geeigneten Stelle schlagt ihr mit anderen Leuten eure Zelte auf.<br>"
+                },
+                {
+                    "duration": 5,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Mitten in der Nacht, werdet ihr jedoch von Räubern überfallen und entführt.<br>"
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+            "question": "",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": 6,
+                    "text": "Es war so schön hier"
+                },
+                {
+                    "nextIndex": 6,
+                    "text": "Ich muss doch im Haus meines Vaters sein"
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 5,
+            "lines": [
+                {
+                    "duration": 3,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Du beschließt in Jerusalem zu bleiben.<br>"
+                },
+                {
+                    "duration": 15,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Deine Eltern machen sich der weile Sorgen, wo du geblieben bist.<br>\nSie fragen überall nach dir, aber niemand scheint dich gesehen zu haben.<br>\nWeil sie dich nicht finden, gehen deine Eltern zurück nach Jerusalem.<br>"
+                },
+                {
+                    "duration": 5,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Dort finden dich deine Eltern im Tempel wieder und sind erleichtert.<br>"
+                },
+                {
+                    "duration": 10,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Du sprichst mit Gelehrten über Gott und die heilige Schrift.<br>\nAlle sind erstaunt und wundern sich, dass du bereits so viel Wissen besitzt.<br>"
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+            "question": "Als dich deine Eltern fragen warum du in Jerusalem geblieben bist, sagst du.",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": 7,
+                    "text": "Weiter"
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 6,
+            "lines": [
+                {
+                    "duration": 5,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Du gehst dann mit deinen Eltern aus dem Tempel und kehrst zurück nach Nazareth"
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+            "question": "Weiter?",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": 8,
+                    "text": "Ja"
+                },
+                {
+                    "nextIndex": 9,
+                    "text": "Nein"
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 7,
+            "lines": [
+                {
+                    "duration": 5,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "18 Jahre Später.<br>Mit 30 Jahren triffst du auf Johannes den Täufer."
+                },
+                {
+                    "duration": 5,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Jetzt kannst du dich entscheiden ob du dich Taufen lassen willst"
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+            "question": "Wills du dich Taufen lassen?",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": 9,
+                    "text": "Weiter"
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 8,
+            "lines": [
+                {
+                    "duration": 5,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Eine Taube kommt vom Himmel geflogen und Gott spricht zu dir."
+                },
+                {
+                    "duration": 3,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Er nennt dich seinen Sohn."
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+            "question": "Weiter?",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": 11,
+                    "text": "Nein"
+                },
+                {
+                    "nextIndex": 10,
+                    "text": "Ja"
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 9,
+            "lines": [
+                {
+                    "duration": 0,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Du ziehst Weiter.<br>Als du in Jerusalem eintriffst, bildet sich eine Menschenmenge um dich."
+                },
+                {
+                    "duration": 0,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Plötzlich zieht eine Person an deinem Gewand.<br>Du drehst dich um und suchst nach der Person.<br>Es schaut dich eine Frau ganz erschüttert an<br>"
+                },
+                {
+                    "duration": 0,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Sie fragt dich nach Hilfe, da sie seit 12 Jahren unter Blutfluss leidet,"
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+            "question": "Möchtest du der Frau helfen?",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": 0,
+                    "text": ""
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 10,
+            "lines": [
+                {
+                    "duration": 0,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Du hast die Frau augenblicklich geheilt."
+                },
+                {
+                    "duration": 0,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Du hast nicht nur ihren Leib geheilt, sondern auch ihre Seele, da du ihr geholfen hast zu innerem Frieden zu kommen."
+                }
+            ],
+            "music": "",
+            "qFont": "Helvetica [Cronyx],10,-1,5,50,0,0,0,0,0",
+            "question": "",
+            "time": "00:00:00"
+        },
+        {
+            "actions": [
+                {
+                    "nextIndex": 0,
+                    "text": ""
+                }
+            ],
+            "background": "",
+            "date": "Sa. Jan. 1 2000",
+            "index": 11,
+            "lines": [
+                {
+                    "duration": 0,
+                    "font": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+                    "text": "Du drehst dich wieder um und gehst weiter. <br>\nDu erhältst Zustimmung aus der Menschenmenge, bekommst aber ein schlechtes Gewissen.<br>\nEinige Menschen wenden sich von dir ab."
+                }
+            ],
+            "music": "",
+            "qFont": "Ubuntu,11,-1,5,50,0,0,0,0,0",
+            "question": "",
+            "time": "00:00:00"
+        }
+    ]
+}
