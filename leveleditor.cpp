@@ -103,6 +103,11 @@ void SceneEditor::setJsonObject(QJsonObject object)
     QJsonArray lines = object.value("lines").toArray();
     QJsonArray actions = object.value("actions").toArray();
     
+    for(ActionWidget *e : this->actions){
+        e->deleteLater();
+    }
+    this->actions.clear();
+
     for(QJsonValueRef e : lines){
         addLine();
         this->lines.last()->setJsonObject(e.toObject());
@@ -152,7 +157,7 @@ void SceneEditor::removeAction()
 void SceneEditor::setIndex(int index)
 {
     this->index = index;
-    qDebug()<<this->index;
+    qDebug()<<"index: "<<this->index;
     emit changeTitle("Index: " + QString::number(index));
 }
 
@@ -176,27 +181,32 @@ void LevelEditor::newScene(int index)
 {
     scenes.append(new SceneEditor(index, this));
     connect(scenes.last(), SIGNAL(changeTitle(QString)), this, SLOT(updateTitle(QString)));
-    insertTab(this->count()+1, scenes.last(), "Index: " + QString::number(scenes.last()->getIndex()));
+    addTab(scenes.last(), "Index: " + QString::number(scenes.last()->getIndex()));
 }
 
 void LevelEditor::save()
 {
-    QString path = QFileDialog::getSaveFileName(this);
-    if(path.isEmpty())
+    file = QFileDialog::getSaveFileName(this);
+    if(file.isEmpty())
         return;
-    QFile f(path);
+    quickSave();
+}
+
+void LevelEditor::quickSave()
+{
+    QFile f(file);
     QJsonDocument doc;
     QJsonObject root;
     QJsonArray levels;
-    
+
     for(SceneEditor *e : scenes){
         QJsonObject current = e->toJsonObjcet();
         levels.append(current);
     }
-    
+
     root.insert("levels", levels);
     doc.setObject(root);
-    
+
     f.open(QIODevice::WriteOnly);
     f.write(doc.toJson());
     f.flush();
@@ -220,15 +230,19 @@ void LevelEditor::load()
     QJsonObject root = doc.object();
     QJsonArray levels = root.value("levels").toArray();
     for(QJsonValueRef e : levels){
-        newScene();
-        scenes.last()->setJsonObject(e.toObject());
+        SceneEditor *s = new SceneEditor(0, this);
+        s->setJsonObject(e.toObject());
+        scenes.append(s);
+        connect(s, SIGNAL(changeTitle(QString)), this, SLOT(updateTitle(QString)));
+        addTab(s, "Index: " + QString::number(s->getIndex()));
     }
+    file = path;
 }
 
 void LevelEditor::updateTitle(QString title)
 {
     SceneEditor *scene = qobject_cast<SceneEditor*>(sender());
-    int sceneIndex = scenes.indexOf(scene)+1;
+    int sceneIndex = scenes.indexOf(scene);
     qDebug()<<"updated title"<<title<<sceneIndex;
     setTabText(sceneIndex, title);
 }

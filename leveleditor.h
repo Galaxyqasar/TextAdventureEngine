@@ -18,6 +18,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QTextEdit>
 
 #include "numberdialog.h"
 
@@ -26,11 +27,11 @@ class LineWidget : public QWidget{
 public:
     explicit LineWidget(QWidget *parent = nullptr) : QWidget(parent){
         fontButton = new QPushButton(this);
-        lineEdit = new QLineEdit(this);
+        textEdit = new QLineEdit(this);
         durationSpinBox = new QDoubleSpinBox(this);
         removeLine = new QPushButton(this);
-        removeLine->setText("X");
-        removeLine->setMaximumWidth(20);
+        removeLine->setIcon(QIcon(":/darkstyle/icon_close.png"));
+        removeLine->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
         fontButton->setText(tr("Schriftart"));
         connect(removeLine, &QPushButton::clicked, this, [&](){
             emit remove();
@@ -40,16 +41,17 @@ public:
             font = QFontDialog::getFont(&ok, font, this, tr("Schriftart auswählen"));
             if(!ok)
                 font = QFont("Helvetica [Cronyx]", 10);
+            textEdit->setFont(font);
         });
         
         mainLayout = new QHBoxLayout(this);
-        mainLayout->addWidget(lineEdit);
+        mainLayout->addWidget(textEdit);
         mainLayout->addWidget(fontButton);
         mainLayout->addWidget(durationSpinBox);
         mainLayout->addWidget(removeLine);
     }
     QFont getFont(){return font;}
-    QString getText(){return lineEdit->text();}
+    QString getText(){return textEdit->text();}
     double getDuration(){return durationSpinBox->value();}
     QJsonObject toJsonObject(){
         QJsonObject object;
@@ -59,13 +61,13 @@ public:
         return object;
     }
     void setJsonObject(QJsonObject object){
-        lineEdit->setText(object.value("text").toString());
+        textEdit->setText(object.value("text").toString());
         durationSpinBox->setValue(object.value("duration").toDouble());
         font.fromString(object.value("font").toString());
     }
     ~LineWidget(){
         delete mainLayout;
-        delete lineEdit;
+        delete textEdit;
         delete fontButton;
         delete durationSpinBox;
         delete removeLine;
@@ -74,7 +76,7 @@ signals:
     void remove();
 private:
     QHBoxLayout *mainLayout;
-    QLineEdit *lineEdit;
+    QLineEdit *textEdit;
     QPushButton *fontButton;
     QDoubleSpinBox *durationSpinBox;
     QPushButton *removeLine;
@@ -91,7 +93,8 @@ public:
         nextIndexSpinBox->setMaximum(INT_MAX);
         nextIndexSpinBox->setMinimum(INT_MIN);
         removeBtn = new QPushButton(this);
-        removeBtn->setText("X");
+        removeBtn->setIcon(QIcon(":/darkstyle/icon_close.png"));
+        removeBtn->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
         connect(removeBtn, &QPushButton::clicked, this, [&](){
             emit remove();
         });
@@ -205,10 +208,12 @@ public:
     explicit LevelEditor(QWidget *parent = nullptr, int index = 0);
     void newScene(int index = 0);
     void save();
+    void quickSave();
     void load();
 public slots:
     void updateTitle(QString title);
 private:
+    QString file;
     QList<SceneEditor*> scenes; 
 };
 
