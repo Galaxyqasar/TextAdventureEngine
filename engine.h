@@ -66,7 +66,11 @@ private slots:
     void on_backToMainMenu_clicked();    
     void on_SaveLevelButton_clicked();    
     void on_loadLevelButton_clicked();
-    
+
+    void on_actionSave_triggered();
+
+    void on_actionOpen_triggered();
+
 private:
     void gameOver();
     void updateLevel(int index = -1);

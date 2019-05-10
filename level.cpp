@@ -21,13 +21,14 @@ Level::Level(QJsonObject level) : QObject(nullptr)
     this->sound = level.value("music").toString();
     this->question = level.value("question").toString();
     this->background = QImage(level.value("background").toString());
-    this->qFont = QFont(level.value("qfont").toString());
+    this->qFont.fromString(level.value("qfont").toString());
     QJsonArray lines = level.value("lines").toArray();
     QJsonArray actions = level.value("actions").toArray();
     for(QJsonValueRef e : lines){
         QJsonObject current = e.toObject();
         QString text = current.value("text").toString();
-        QFont font = QFont(current.value("font").toString());
+        QFont font;
+        font.fromString(current.value("font").toString());
         float duration = float(current.value("duration").toDouble());
         Line line = {text, font, duration};
         this->lines.append(line);
@@ -39,8 +40,6 @@ Level::Level(QJsonObject level) : QObject(nullptr)
         Action action = {text, nextIndex};
         this->actions.append(action);
     }
-    while(this->actions.length() < 3)
-        this->actions.append({"error",0});
 }
 
 Level::~Level()

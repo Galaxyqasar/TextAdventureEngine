@@ -28,6 +28,10 @@ Engine::~Engine()
 
 void Engine::gameTick()
 {
+    if(current->actions.length() == 1){
+        if(current->actions.last().nextIndex == -1)
+            gameOver();
+    }
     int progress = ui->progressBar->value();
     if(progress > 0){
         progress--;
@@ -58,8 +62,13 @@ void Engine::loadLevels(QStringList files)
 
 void Engine::updateLevel(int index)
 {
+    gameTimer->stop();
     if(index >= 0)
         position = current->actions[index].nextIndex;
+    if(position == -1){
+        gameOver();
+        return;
+    }
     bool found = false;
     for(Level *e : levels){
         if(e->index == position){
@@ -73,7 +82,6 @@ void Engine::updateLevel(int index)
         qApp->quit();
         return;
     }
-    current = levels[position];
     ui->imageDisplay->setPixmap(QPixmap::fromImage(current->background));
     music->stop();
     music->setMedia(QUrl(current->sound));
@@ -94,6 +102,7 @@ void Engine::showNextText()
     }
     else{
         QString text = current->lines[currentText].text;
+        //text.replace("<br>", "\n");
         QFont font = current->lines[currentText].font;
         textDisplay->updateText(text, font);
         int duration = int(current->lines[currentText].duration*1000);
@@ -121,7 +130,6 @@ void Engine::patchUi()
     ui->tabWidget->tabBar()->hide();
     ui->tabWidget->setCurrentIndex(mainMenu);
     ui->statusBar->hide();
-    ui->menuBar->hide();
     ui->mainToolBar->hide();
     
     actionDisplay = new ActionDisplay(ui->mainGame, {"action1","action2","action3"});
@@ -130,7 +138,6 @@ void Engine::patchUi()
     });
     
     ui->mainGame->layout()->addWidget(actionDisplay);
-    
     QSizePolicy spRetain = ui->progressBar->sizePolicy();
     spRetain.setRetainSizeWhenHidden(true);
     ui->progressBar->setSizePolicy(spRetain);
@@ -161,7 +168,7 @@ void Engine::on_startButton_clicked()
         files.append(iter.next());
     qDebug()<<files;
     
-    loadLevels({"./level1.json","test.json"});
+    loadLevels(files);
     paused = false;
     position = 0;
     ui->tabWidget->setCurrentIndex(mainGame);
@@ -261,12 +268,20 @@ void ActionDisplay::setActions(QStringList buttonNames)
     }
 }
 
-
 void ActionDisplay::setActions(QList<Action> actions){
     QStringList buttonNames;
     for(Action e : actions){
         buttonNames.append(e.text);
     }
     setActions(buttonNames);
-    qDebug()<<actions.length();
+}
+
+void Engine::on_actionSave_triggered()
+{
+    editor->quickSave();
+}
+
+void Engine::on_actionOpen_triggered()
+{
+    editor->load();
 }
