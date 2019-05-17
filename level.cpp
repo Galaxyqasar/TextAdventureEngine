@@ -37,7 +37,12 @@ Level::Level(QJsonObject level) : QObject(nullptr)
         QJsonObject current = e.toObject();
         QString text = current.value("text").toString();
         int nextIndex = current.value("nextIndex").toInt();
-        Action action = {text, nextIndex};
+        QJsonObject scoresObject = current.value("scores").toObject();
+        QMap<QString, int> scores;
+        for(QString key : scoresObject.keys()){
+            scores[key] = scoresObject.value(key).toInt();
+        }
+        Action action = {text, nextIndex, scores};
         this->actions.append(action);
     }
 }

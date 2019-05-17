@@ -28,18 +28,21 @@ SOURCES += \
     level.cpp \
     leveleditor.cpp \
     numberdialog.cpp \
-    textdisplay.cpp
+    textdisplay.cpp \
+    linedialog.cpp
 
 HEADERS += \
         engine.h \
     level.h \
     leveleditor.h \
     numberdialog.h \
-    textdisplay.h
+    textdisplay.h \
+    linedialog.h
 
 FORMS += \
         engine.ui \
-    numberdialog.ui
+    numberdialog.ui \
+    linedialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -48,3 +51,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     level1.json
+
+RESOURCES += \
+    resources.qrc

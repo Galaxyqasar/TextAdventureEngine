@@ -20,6 +20,7 @@ typedef struct Line{
 typedef struct Action{
     QString text;
     int nextIndex;
+    QMap<QString, int> scores;
 } Action;
 
 class Level : public QObject

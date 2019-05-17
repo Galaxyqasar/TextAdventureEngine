@@ -44,7 +44,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="mainMenuDisplay">
           <property name="text">
            <string>Hauptmenü</string>
           </property>
@@ -82,7 +82,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="pauseDisplay">
           <property name="text">
            <string>Pause</string>
           </property>
@@ -157,7 +157,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="gameOverDisplay">
           <property name="text">
            <string>Game Over</string>
           </property>
@@ -179,11 +179,17 @@
        <attribute name="title">
         <string>LevelEditor</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_7">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <layout class="QVBoxLayout" name="levelEditorLayout">
           <item>
            <widget class="QPushButton" name="newSceneButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Neue Szene</string>
             </property>
@@ -191,6 +197,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="loadLevelButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Level Laden</string>
             </property>
@@ -198,6 +210,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="SaveLevelButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Level Speichern</string>
             </property>
@@ -205,8 +223,35 @@
           </item>
           <item>
            <widget class="QPushButton" name="backToMainMenu">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Hauptmenü</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="QListWidget" name="listWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="scoreButton">
+            <property name="text">
+             <string>Score hinzufügen</string>
             </property>
            </widget>
           </item>
@@ -234,6 +279,14 @@
      <height>20</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuDatei">
+    <property name="title">
+     <string>Datei</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionOpen"/>
+   </widget>
+   <addaction name="menuDatei"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -244,6 +297,25 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionSave">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Level Speichern</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Level Öffnen</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

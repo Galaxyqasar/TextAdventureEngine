@@ -166,6 +166,13 @@ int SceneEditor::getIndex()
     return index;
 }
 
+void SceneEditor::addScore(QString score)
+{
+    for(ActionWidget *a : actions){
+        a->addScore(score);
+    }
+}
+
 LevelEditor::LevelEditor(QWidget *parent, int index) : QTabWidget(parent){
     setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
     setTabsClosable(true);
@@ -237,6 +244,20 @@ void LevelEditor::load()
         addTab(s, "Index: " + QString::number(s->getIndex()));
     }
     file = path;
+}
+
+void LevelEditor::updateScores(QStringList scores)
+{
+    for(QString s : scores){
+        if(!this->scores.contains(s)){
+            this->scores.append(s);
+            for(SceneEditor *e : scenes){
+                e->addScore(s);
+            }
+        }
+        else
+            qDebug()<<"score already in list";
+    }
 }
 
 void LevelEditor::updateTitle(QString title)

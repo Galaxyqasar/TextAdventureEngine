@@ -12,6 +12,7 @@
 #include "level.h"
 #include "leveleditor.h"
 #include "numberdialog.h"
+#include "linedialog.h"
 #include "textdisplay.h"
 
 namespace Ui {
@@ -71,6 +72,8 @@ private slots:
 
     void on_actionOpen_triggered();
 
+    void on_scoreButton_clicked();
+    
 private:
     void gameOver();
     void updateLevel(int index = -1);
@@ -92,6 +95,8 @@ private:
     QList<Level*> levels;
     Level *current;
     QMediaPlayer *music;
+    
+    QMap<QString, int> scores;
 };
 
 #endif // ENGINE_H

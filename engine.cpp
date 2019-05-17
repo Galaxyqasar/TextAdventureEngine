@@ -1,4 +1,5 @@
 #include <QTabBar>
+#include <QDialogButtonBox>
 
 #include "engine.h"
 #include "ui_engine.h"
@@ -17,6 +18,8 @@ Engine::Engine(QWidget *parent) :
     connect(textTimer, SIGNAL(timeout()), this, SLOT(showNextText()));
     
     music = new QMediaPlayer();
+    
+    current = nullptr;
 }
 
 Engine::~Engine()
@@ -38,12 +41,17 @@ void Engine::gameTick()
         ui->progressBar->setValue(progress);
     }
     else
-        gameOver();
+        updateLevel(0);
 }
 
 void Engine::gameOver()
 {
     gameTimer->stop();
+    QString text;
+    for(QString key : scores.keys()){
+        text.append(key + " : " + QString::number(scores[key]) + "\n");
+    }
+    ui->gameOverDisplay->setText(text);
     ui->tabWidget->setCurrentIndex(gameOverScreen);
     music->stop();
 }
@@ -58,6 +66,13 @@ void Engine::loadLevels(QStringList files)
     for(QString e : files){
         loadLevels(e);
     }
+    for(Level *e : levels){
+        for(Action a : e->actions){
+            for(QString key : a.scores.keys())
+                scores.insert(key, 0);
+        }
+    }
+    textDisplay->updateScores(scores);
 }
 
 void Engine::updateLevel(int index)
@@ -68,6 +83,12 @@ void Engine::updateLevel(int index)
     if(position == -1){
         gameOver();
         return;
+    }
+    if(current){
+        for(QString key : current->actions[index].scores.keys()){
+            scores[key] += current->actions[index].scores[key];
+        }
+        textDisplay->updateScores(scores);
     }
     bool found = false;
     for(Level *e : levels){
@@ -284,4 +305,18 @@ void Engine::on_actionSave_triggered()
 void Engine::on_actionOpen_triggered()
 {
     editor->load();
+}
+
+void Engine::on_scoreButton_clicked()
+{
+    LineDialog *d = new LineDialog(this);
+    if(d->exec()){
+        ui->listWidget->addItem(d->getText());
+        QList<QString> scores;
+        for(int i = 0; i < ui->listWidget->count(); i++){
+            QString name = ui->listWidget->item(i)->text();
+            scores.append(name);
+        }
+        editor->updateScores(scores);
+    }
 }

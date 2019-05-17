@@ -84,6 +84,34 @@ private:
     QFont font;
 };
 
+class ScoreWidget : public QFrame{
+    Q_OBJECT
+public:
+    explicit ScoreWidget(QWidget *parent = nullptr, QString name = "", int v = 0) : QFrame(parent){
+        nameDisplay = new QLabel(name, this);
+        value = new QSpinBox(this);
+        value->setValue(v);
+        layout = new QHBoxLayout(this);
+        layout->addWidget(nameDisplay);
+        layout->addWidget(value);
+    }
+    QString getName(){
+        return  nameDisplay->text();
+    }
+    int getValue(){
+        return value->value();
+    }
+    ~ScoreWidget(){
+        delete nameDisplay;
+        delete value;
+        delete layout;
+    }
+private:
+    QLabel *nameDisplay;
+    QSpinBox *value;
+    QHBoxLayout *layout;
+};
+
 class ActionWidget : public QWidget{
     Q_OBJECT
 public:
@@ -110,11 +138,24 @@ public:
         QJsonObject object;
         object.insert("text", getText());
         object.insert("nextIndex", getNextIndex());
+        QJsonObject scoresObject;
+        for(ScoreWidget *w : scores){
+            scoresObject.insert(w->getName(), w->getValue());
+        }
+        object.insert("scores", scoresObject);
         return object;
     }
     void setJsonObject(QJsonObject object){
         lineEdit->setText(object.value("text").toString());
         nextIndexSpinBox->setValue(object.value("nextIndex").toInt());
+        QJsonObject scoresObject = object.value("scores").toObject();
+        for(QString key : scoresObject.keys()){
+            addScore(key, scoresObject.value(key).toInt());
+        }
+    }
+    void addScore(QString score, int value = 0){
+        scores.append(new ScoreWidget(this, score, value));
+        mainLayout->insertWidget(mainLayout->count()-1, scores.last());
     }
     ~ActionWidget(){
         delete mainLayout;
@@ -128,6 +169,7 @@ private:
     QLineEdit *lineEdit;
     QSpinBox *nextIndexSpinBox;
     QPushButton *removeBtn;
+    QList<ScoreWidget*> scores;
 };
 
 class RessourceWidget : public QWidget{
@@ -176,6 +218,7 @@ public slots:
     void removeAction();
     void setIndex(int index);
     int getIndex();
+    void addScore(QString score);
 signals:
     void changeTitle(QString title);
 private:
@@ -210,10 +253,12 @@ public:
     void save();
     void quickSave();
     void load();
+    void updateScores(QStringList scores);
 public slots:
     void updateTitle(QString title);
 private:
     QString file;
+    QStringList scores;
     QList<SceneEditor*> scenes; 
 };
 
